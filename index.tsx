@@ -2,6 +2,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+
+// Example: import your Gemini service and use it
+import { getFinancialAdvice } from './services/geminiService';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -14,4 +19,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-   
