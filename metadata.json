@@ -1,0 +1,5 @@
+{
+  "name": "AI Personal Expense Tracker",
+  "description": "An intelligent expense tracker app that helps you manage daily expenses, visualize spending patterns, set budgets, and receive personalized financial advice from an AI advisor powered by Gemini.",
+  "requestFramePermissions": []
+}
