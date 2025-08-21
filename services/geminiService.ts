@@ -3,7 +3,7 @@ import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { Expense, Budget } from '../types';
 import { CURRENCY } from '../constants';
 
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
   console.error("API_KEY environment variable not set.");
@@ -13,8 +13,8 @@ const ai = new GoogleGenAI({ apiKey: API_KEY! });
 
 const generatePrompt = (
   promptType: 'analysis' | 'summary' | 'prediction' | 'alert',
-  expenses: Expense[], 
-  budgets: Budget[], 
+  expenses: Expense[],
+  budgets: Budget[],
   savings: { goal: number; totalSaved: number },
   alertInfo?: { category: string; spent: number; limit: number }
 ): string => {
@@ -77,13 +77,13 @@ export const getFinancialAdvice = async (
   if (!API_KEY) {
     return "Error: API key is not configured. Please set the API_KEY environment variable.";
   }
-  
+
   const prompt = generatePrompt(promptType, expenses, budgets, savings, alertInfo);
-  
+
   try {
     const response: GenerateContentResponse = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
+      model: 'gemini-2.5-flash',
+      contents: prompt,
     });
 
     return response.text;
