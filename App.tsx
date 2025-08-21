@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Expense, ExpenseCategory, Budget, RecurringExpense, SavingsTransaction, AppView } from './types';
@@ -21,11 +22,11 @@ const getStartOfMonth = (d: Date) => new Date(d.getFullYear(), d.getMonth(), 1);
 const getStartOfYear = (d: Date) => new Date(d.getFullYear(), 0, 1);
 
 const formatNumber = (amount: number): string => {
-    return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
 
 const formatCurrency = (amount: number): string => {
-    return `${CURRENCY_SYMBOL}${formatNumber(amount)}`;
+  return `${CURRENCY_SYMBOL}${formatNumber(amount)}`;
 };
 
 const parseFormattedNumber = (value: string): number => {
@@ -89,16 +90,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 };
 
 interface ExpenseFormProps {
-    onSave: (expense: Omit<Expense, 'id' | 'created_at'>) => void;
-    onClose: () => void;
-    expenseToEdit?: Expense | null;
+  onSave: (expense: Omit<Expense, 'id' | 'created_at'>) => void;
+  onClose: () => void;
+  expenseToEdit?: Expense | null;
 }
 const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSave, onClose, expenseToEdit }) => {
   const [amount, setAmount] = useState(expenseToEdit?.amount.toString() || '');
   const [category, setCategory] = useState<ExpenseCategory>(expenseToEdit?.category || ExpenseCategory.Groceries);
   const [description, setDescription] = useState(expenseToEdit?.description || '');
   const [date, setDate] = useState(expenseToEdit ? expenseToEdit.date.split('T')[0] : formatDate(new Date()));
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (parseFloat(amount) > 0) {
@@ -115,7 +116,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSave, onClose, expenseToEdi
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-text-secondary">Amount ({CURRENCY_SYMBOL})</label>
-        <input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent"/>
+        <input type="number" value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent" />
       </div>
       <div>
         <label className="block text-sm font-medium text-text-secondary">Category</label>
@@ -125,15 +126,15 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSave, onClose, expenseToEdi
       </div>
       <div>
         <label className="block text-sm font-medium text-text-secondary">Description</label>
-        <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g., Weekly groceries" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent"/>
+        <input type="text" value={description} onChange={e => setDescription(e.target.value)} placeholder="e.g., Weekly groceries" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent" />
       </div>
       <div>
         <label className="block text-sm font-medium text-text-secondary">Date</label>
-        <input type="date" value={date} onChange={e => setDate(e.target.value)} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent"/>
+        <input type="date" value={date} onChange={e => setDate(e.target.value)} required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent" />
       </div>
       <div className="flex justify-end space-x-3 pt-4">
         <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg font-semibold text-gray-700 bg-gray-200 hover:bg-gray-300">Cancel</button>
-        <Button onClick={() => {}}>{expenseToEdit ? 'Save Changes' : 'Add Expense'}</Button>
+        <Button onClick={() => { }}>{expenseToEdit ? 'Save Changes' : 'Add Expense'}</Button>
       </div>
     </form>
   );
@@ -146,29 +147,29 @@ interface CategoryPieChartProps {
   data: { name: string; value: number }[];
 }
 const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ data }) => (
-    <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-            <Pie data={data} cx="50%" cy="50%" labelLine={false} outerRadius={80} fill="#8884d8" dataKey="value" nameKey="name" label={(entry) => entry.name}>
-                {data.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]} />)}
-            </Pie>
-            <Tooltip formatter={(value: number) => formatCurrency(value)} />
-        </PieChart>
-    </ResponsiveContainer>
+  <ResponsiveContainer width="100%" height={300}>
+    <PieChart>
+      <Pie data={data} cx="50%" cy="50%" labelLine={false} outerRadius={80} fill="#8884d8" dataKey="value" nameKey="name" label={(entry) => entry.name}>
+        {data.map((entry, index) => <Cell key={`cell-${index}`} fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]} />)}
+      </Pie>
+      <Tooltip formatter={(value: number) => formatCurrency(value)} />
+    </PieChart>
+  </ResponsiveContainer>
 );
 
 interface MonthlyBarChartProps {
-    data: any[];
+  data: any[];
 }
 const MonthlyBarChart: React.FC<MonthlyBarChartProps> = ({ data }) => (
-    <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
-            <XAxis dataKey="name" stroke="#6b7280" />
-            <YAxis stroke="#6b7280" tickFormatter={(value) => `${CURRENCY_SYMBOL}${value / 1000}k`} />
-            <Tooltip formatter={(value: number) => [formatCurrency(value), 'Expenses']} cursor={{ fill: 'rgba(79, 70, 229, 0.1)' }} />
-            <Legend />
-            <Bar dataKey="expenses" fill="#4f46e5" radius={[4, 4, 0, 0]} />
-        </BarChart>
-    </ResponsiveContainer>
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart data={data}>
+      <XAxis dataKey="name" stroke="#6b7280" />
+      <YAxis stroke="#6b7280" tickFormatter={(value) => `${CURRENCY_SYMBOL}${value / 1000}k`} />
+      <Tooltip formatter={(value: number) => [formatCurrency(value), 'Expenses']} cursor={{ fill: 'rgba(79, 70, 229, 0.1)' }} />
+      <Legend />
+      <Bar dataKey="expenses" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+    </BarChart>
+  </ResponsiveContainer>
 );
 
 
@@ -209,16 +210,16 @@ export default function App() {
 
       if (expensesRes.error) throw expensesRes.error;
       setExpenses(expensesRes.data || []);
-      
+
       if (budgetsRes.error) throw budgetsRes.error;
       setBudgets(budgetsRes.data || []);
-      
+
       if (savingsRes.error) throw savingsRes.error;
       setSavingsTransactions(savingsRes.data || []);
 
       if (savingsGoalRes.error) throw savingsGoalRes.error;
       setSavingsGoal(Number(savingsGoalRes.data?.value) || 50000);
-      
+
       if (recurringRes.error) throw recurringRes.error;
       setRecurringExpenses(recurringRes.data || []);
 
@@ -232,7 +233,7 @@ export default function App() {
   useEffect(() => {
     fetchAllData();
   }, [fetchAllData]);
-  
+
   // --- DATA MUTATIONS ---
   const handleSaveExpense = async (expenseData: Omit<Expense, 'id' | 'created_at'>) => {
     try {
@@ -251,16 +252,16 @@ export default function App() {
       console.error("Error saving expense:", error);
     }
   };
-  
+
   const handleDeleteExpense = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this expense?')) {
-        try {
-            const { error } = await supabase.from('expenses').delete().eq('id', id);
-            if (error) throw error;
-            setExpenses(prev => prev.filter(exp => exp.id !== id));
-        } catch(error) {
-            console.error("Error deleting expense:", error);
-        }
+      try {
+        const { error } = await supabase.from('expenses').delete().eq('id', id);
+        if (error) throw error;
+        setExpenses(prev => prev.filter(exp => exp.id !== id));
+      } catch (error) {
+        console.error("Error deleting expense:", error);
+      }
     }
   };
 
@@ -277,38 +278,38 @@ export default function App() {
   };
 
   const handleBudgetChange = async (category: ExpenseCategory, limit: number) => {
-      const newLimit = isNaN(limit) ? 0 : limit;
-      try {
-        const { error } = await supabase.from('budgets').update({ limit: newLimit }).eq('category', category);
-        if (error) throw error;
-        setBudgets(budgets.map(b => b.category === category ? { ...b, limit: newLimit } : b));
-      } catch (error) {
-        console.error("Error updating budget:", error);
-      }
+    const newLimit = isNaN(limit) ? 0 : limit;
+    try {
+      const { error } = await supabase.from('budgets').update({ limit: newLimit }).eq('category', category);
+      if (error) throw error;
+      setBudgets(budgets.map(b => b.category === category ? { ...b, limit: newLimit } : b));
+    } catch (error) {
+      console.error("Error updating budget:", error);
+    }
   };
-  
+
   const handleSetSavingsGoal = async (goal: number) => {
-      const newGoal = isNaN(goal) ? 0 : goal;
-      setSavingsGoal(newGoal); // Optimistic update
-      try {
-        const { error } = await supabase.from('app_config').update({ value: newGoal }).eq('key', 'savingsGoal');
-        if (error) throw error;
-      } catch (error) {
-        console.error("Error setting savings goal:", error);
-      }
+    const newGoal = isNaN(goal) ? 0 : goal;
+    setSavingsGoal(newGoal); // Optimistic update
+    try {
+      const { error } = await supabase.from('app_config').update({ value: newGoal }).eq('key', 'savingsGoal');
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error setting savings goal:", error);
+    }
   };
 
   const handleAddToSavings = async (amount: number) => {
-      if (amount > 0) {
-          try {
-              const newTransaction = { amount, date: new Date().toISOString() };
-              const { error } = await supabase.from('savings_transactions').insert(newTransaction);
-              if (error) throw error;
-              await fetchAllData();
-          } catch(error) {
-              console.error("Error adding to savings:", error);
-          }
+    if (amount > 0) {
+      try {
+        const newTransaction = { amount, date: new Date().toISOString() };
+        const { error } = await supabase.from('savings_transactions').insert(newTransaction);
+        if (error) throw error;
+        await fetchAllData();
+      } catch (error) {
+        console.error("Error adding to savings:", error);
       }
+    }
   };
 
   const openModal = (expense?: Expense) => {
@@ -320,9 +321,9 @@ export default function App() {
     setIsModalOpen(false);
     setExpenseToEdit(null);
   };
-  
+
   const totalSaved = useMemo(() => savingsTransactions.reduce((acc, curr) => acc + curr.amount, 0), [savingsTransactions]);
-  
+
   const handleGetAIAdvice = useCallback(async (type: 'analysis' | 'summary' | 'prediction') => {
     setIsAiLoading(true);
     setAiResponse('');
@@ -332,7 +333,7 @@ export default function App() {
     setAiResponse(response);
     setIsAiLoading(false);
   }, [expenses, budgets, savingsGoal, totalSaved]);
-  
+
   // Memoized calculations
   const { dailyTotal, weeklyTotal, monthlyTotal, yearlyTotal, periods } = useMemo(() => {
     const now = new Date();
@@ -341,58 +342,58 @@ export default function App() {
     const startOfYear = getStartOfYear(now);
 
     const totals = expenses.reduce((acc, exp) => {
-        const expDate = new Date(exp.date);
-        if (formatDate(expDate) === formatDate(now)) acc.dailyTotal += exp.amount;
-        if (expDate >= startOfWeek) acc.weeklyTotal += exp.amount;
-        if (expDate >= startOfMonth) acc.monthlyTotal += exp.amount;
-        if (expDate >= startOfYear) acc.yearlyTotal += exp.amount;
-        return acc;
+      const expDate = new Date(exp.date);
+      if (formatDate(expDate) === formatDate(now)) acc.dailyTotal += exp.amount;
+      if (expDate >= startOfWeek) acc.weeklyTotal += exp.amount;
+      if (expDate >= startOfMonth) acc.monthlyTotal += exp.amount;
+      if (expDate >= startOfYear) acc.yearlyTotal += exp.amount;
+      return acc;
     }, { dailyTotal: 0, weeklyTotal: 0, monthlyTotal: 0, yearlyTotal: 0 });
 
     const periods = {
-        daily: `for ${now.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`,
-        weekly: `since ${startOfWeek.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`,
-        monthly: `since ${startOfMonth.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`,
-        yearly: `since ${startOfYear.toLocaleDateString(undefined, { year: 'numeric' })}`
+      daily: `for ${now.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`,
+      weekly: `since ${startOfWeek.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`,
+      monthly: `since ${startOfMonth.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`,
+      yearly: `since ${startOfYear.toLocaleDateString(undefined, { year: 'numeric' })}`
     };
 
     return { ...totals, periods };
   }, [expenses]);
-  
+
   const monthlyCategorySpending = useMemo(() => {
     const startOfMonth = getStartOfMonth(new Date());
     const monthlyExpenses = expenses.filter(e => new Date(e.date) >= startOfMonth);
-    
+
     return CATEGORIES.map(category => {
-        const total = monthlyExpenses
-            .filter(e => e.category === category)
-            .reduce((sum, e) => sum + e.amount, 0);
-        return { name: category, value: total };
+      const total = monthlyExpenses
+        .filter(e => e.category === category)
+        .reduce((sum, e) => sum + e.amount, 0);
+      return { name: category, value: total };
     }).filter(c => c.value > 0);
   }, [expenses]);
-  
+
   const historicalMonthlyData = useMemo(() => {
     const months = Array.from({ length: 6 }, (_, i) => {
-        const d = new Date();
-        d.setMonth(d.getMonth() - i);
-        return { name: d.toLocaleString('default', { month: 'short' }), year: d.getFullYear(), month: d.getMonth() };
+      const d = new Date();
+      d.setMonth(d.getMonth() - i);
+      return { name: d.toLocaleString('default', { month: 'short' }), year: d.getFullYear(), month: d.getMonth() };
     }).reverse();
 
     return months.map(m => {
-        const total = expenses
-            .filter(e => {
-                const d = new Date(e.date);
-                return d.getMonth() === m.month && d.getFullYear() === m.year;
-            })
-            .reduce((sum, e) => sum + e.amount, 0);
-        return { name: m.name, expenses: total };
+      const total = expenses
+        .filter(e => {
+          const d = new Date(e.date);
+          return d.getMonth() === m.month && d.getFullYear() === m.year;
+        })
+        .reduce((sum, e) => sum + e.amount, 0);
+      return { name: m.name, expenses: total };
     });
   }, [expenses]);
 
 
   const renderView = () => {
     if (loading) {
-        return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div></div>;
+      return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div></div>;
     }
     switch (activeView) {
       case AppView.Dashboard: return <DashboardView />;
@@ -402,197 +403,197 @@ export default function App() {
       default: return <DashboardView />;
     }
   };
-  
+
   const DashboardView = () => (
     <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <SummaryCard title="Today's Expenses" amount={dailyTotal} period={periods.daily} />
-            <SummaryCard title="This Week's Expenses" amount={weeklyTotal} period={periods.weekly} />
-            <SummaryCard title="This Month's Expenses" amount={monthlyTotal} period={periods.monthly} />
-            <SummaryCard title="This Year's Expenses" amount={yearlyTotal} period={periods.yearly} />
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            <Card className="lg:col-span-3">
-                <h3 className="text-lg font-semibold text-text-primary mb-4">Monthly Spending History</h3>
-                <MonthlyBarChart data={historicalMonthlyData} />
-            </Card>
-            <Card className="lg:col-span-2">
-                <h3 className="text-lg font-semibold text-text-primary mb-4">This Month by Category</h3>
-                <CategoryPieChart data={monthlyCategorySpending} />
-            </Card>
-        </div>
-        <Card>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Recent Transactions</h3>
-            <div className="space-y-3 max-h-96 overflow-y-auto">
-                {expenses.slice(0, 10).map(exp => (
-                    <div key={exp.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                        <div>
-                            <p className="font-semibold text-text-primary">{exp.description}</p>
-                            <p className="text-sm text-text-secondary">{exp.category} &bull; {new Date(exp.date).toLocaleDateString()}</p>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <p className="font-semibold text-lg text-red-500">{formatCurrency(exp.amount)}</p>
-                            <button onClick={() => openModal(exp)} className="text-gray-400 hover:text-primary"><Icons.Pencil /></button>
-                            <button onClick={() => handleDeleteExpense(exp.id)} className="text-gray-400 hover:text-red-500"><Icons.Trash /></button>
-                        </div>
-                    </div>
-                ))}
-                 {expenses.length === 0 && <p className="text-center text-text-secondary py-4">No transactions yet. Add one to get started!</p>}
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <SummaryCard title="Today's Expenses" amount={dailyTotal} period={periods.daily} />
+        <SummaryCard title="This Week's Expenses" amount={weeklyTotal} period={periods.weekly} />
+        <SummaryCard title="This Month's Expenses" amount={monthlyTotal} period={periods.monthly} />
+        <SummaryCard title="This Year's Expenses" amount={yearlyTotal} period={periods.yearly} />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <Card className="lg:col-span-3">
+          <h3 className="text-lg font-semibold text-text-primary mb-4">Monthly Spending History</h3>
+          <MonthlyBarChart data={historicalMonthlyData} />
         </Card>
+        <Card className="lg:col-span-2">
+          <h3 className="text-lg font-semibold text-text-primary mb-4">This Month by Category</h3>
+          <CategoryPieChart data={monthlyCategorySpending} />
+        </Card>
+      </div>
+      <Card>
+        <h3 className="text-lg font-semibold text-text-primary mb-4">Recent Transactions</h3>
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          {expenses.slice(0, 10).map(exp => (
+            <div key={exp.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+              <div>
+                <p className="font-semibold text-text-primary">{exp.description}</p>
+                <p className="text-sm text-text-secondary">{exp.category} &bull; {new Date(exp.date).toLocaleDateString()}</p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <p className="font-semibold text-lg text-red-500">{formatCurrency(exp.amount)}</p>
+                <button onClick={() => openModal(exp)} className="text-gray-400 hover:text-primary"><Icons.Pencil /></button>
+                <button onClick={() => handleDeleteExpense(exp.id)} className="text-gray-400 hover:text-red-500"><Icons.Trash /></button>
+              </div>
+            </div>
+          ))}
+          {expenses.length === 0 && <p className="text-center text-text-secondary py-4">No transactions yet. Add one to get started!</p>}
+        </div>
+      </Card>
     </div>
   );
-  
+
   const BudgetView = () => {
     const monthlySpending = useMemo(() => {
-        const startOfMonth = getStartOfMonth(new Date());
-        return expenses.filter(e => new Date(e.date) >= startOfMonth)
-            .reduce((acc, e) => {
-                acc[e.category] = (acc[e.category] || 0) + e.amount;
-                return acc;
-            }, {} as Record<ExpenseCategory, number>);
+      const startOfMonth = getStartOfMonth(new Date());
+      return expenses.filter(e => new Date(e.date) >= startOfMonth)
+        .reduce((acc, e) => {
+          acc[e.category] = (acc[e.category] || 0) + e.amount;
+          return acc;
+        }, {} as Record<ExpenseCategory, number>);
     }, [expenses]);
-    
+
     return (
-        <Card>
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Monthly Budgets</h2>
-            <div className="space-y-4">
-                {budgets.map(budget => {
-                    const spent = monthlySpending[budget.category] || 0;
-                    const percentage = budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
-                    const progressBarColor = percentage > 100 ? 'bg-red-500' : percentage > 80 ? 'bg-yellow-500' : 'bg-primary';
-                    return (
-                        <div key={budget.category}>
-                            <div className="flex justify-between items-center mb-1">
-                                <span className="font-semibold">{budget.category}</span>
-                                <span className="text-sm text-text-secondary">{formatCurrency(spent)} / {formatCurrency(budget.limit)}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div className={progressBarColor} style={{ width: `${Math.min(percentage, 100)}%`, height: '100%', borderRadius: '9999px' }}></div>
-                            </div>
-                            <div className="flex items-center mt-2">
-                                <span className="text-sm mr-2">Set Budget: {CURRENCY_SYMBOL}</span>
-                                <input 
-                                    type="text"
-                                    placeholder="0"
-                                    defaultValue={budget.limit > 0 ? budget.limit.toLocaleString('en-US') : ''}
-                                    onBlur={(e) => handleBudgetChange(budget.category, parseFormattedNumber(e.target.value))}
-                                    className="w-32 border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
-                                />
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </Card>
+      <Card>
+        <h2 className="text-2xl font-bold text-text-primary mb-6">Monthly Budgets</h2>
+        <div className="space-y-4">
+          {budgets.map(budget => {
+            const spent = monthlySpending[budget.category] || 0;
+            const percentage = budget.limit > 0 ? (spent / budget.limit) * 100 : 0;
+            const progressBarColor = percentage > 100 ? 'bg-red-500' : percentage > 80 ? 'bg-yellow-500' : 'bg-primary';
+            return (
+              <div key={budget.category}>
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-semibold">{budget.category}</span>
+                  <span className="text-sm text-text-secondary">{formatCurrency(spent)} / {formatCurrency(budget.limit)}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div className={progressBarColor} style={{ width: `${Math.min(percentage, 100)}%`, height: '100%', borderRadius: '9999px' }}></div>
+                </div>
+                <div className="flex items-center mt-2">
+                  <span className="text-sm mr-2">Set Budget: {CURRENCY_SYMBOL}</span>
+                  <input
+                    type="text"
+                    placeholder="0"
+                    defaultValue={budget.limit > 0 ? budget.limit.toLocaleString('en-US') : ''}
+                    onBlur={(e) => handleBudgetChange(budget.category, parseFormattedNumber(e.target.value))}
+                    className="w-32 border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
     );
   };
-  
+
   const SavingsView = () => {
     const [amountToAdd, setAmountToAdd] = useState<number>(0);
 
     const addFunds = async () => {
-        await handleAddToSavings(amountToAdd);
-        setAmountToAdd(0);
+      await handleAddToSavings(amountToAdd);
+      setAmountToAdd(0);
     }
-    
+
     const quickAddToSavings = (amount: number) => {
-        setAmountToAdd(prev => prev + amount);
+      setAmountToAdd(prev => prev + amount);
     };
 
     const progress = savingsGoal > 0 ? (totalSaved / savingsGoal) * 100 : 0;
     const progressBarColor = progress >= 100 ? 'bg-secondary' : 'bg-primary';
 
     return (
-        <div className="space-y-6">
-            <Card>
-                <h2 className="text-2xl font-bold text-text-primary mb-2">My Savings Pot</h2>
-                <p className="text-4xl font-bold text-secondary mb-4">{formatCurrency(totalSaved)}</p>
-                
-                <div className="flex justify-between items-baseline mb-1">
-                    <span className="text-sm text-text-secondary">Goal Progress</span>
-                    <span className="text-sm font-semibold">{formatCurrency(savingsGoal)}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                    <div className={progressBarColor} style={{ width: `${Math.min(progress, 100)}%`, height: '100%', borderRadius: '9999px', transition: 'width 0.5s ease-in-out' }}></div>
-                </div>
-                <div className="flex items-center mt-4">
-                    <label htmlFor="savingsGoal" className="text-sm font-medium text-text-secondary mr-2">Set Your Goal:</label>
-                    <input 
-                        id="savingsGoal"
-                        type="text"
-                        placeholder="0"
-                        defaultValue={savingsGoal > 0 ? savingsGoal.toLocaleString('en-US') : ''}
-                        onBlur={(e) => handleSetSavingsGoal(parseFormattedNumber(e.target.value))}
-                        className="w-40 border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
-                    />
-                </div>
-            </Card>
+      <div className="space-y-6">
+        <Card>
+          <h2 className="text-2xl font-bold text-text-primary mb-2">My Savings Pot</h2>
+          <p className="text-4xl font-bold text-secondary mb-4">{formatCurrency(totalSaved)}</p>
 
-            <Card>
-                <h3 className="text-lg font-semibold text-text-primary mb-4">Add to Savings</h3>
+          <div className="flex justify-between items-baseline mb-1">
+            <span className="text-sm text-text-secondary">Goal Progress</span>
+            <span className="text-sm font-semibold">{formatCurrency(savingsGoal)}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+            <div className={progressBarColor} style={{ width: `${Math.min(progress, 100)}%`, height: '100%', borderRadius: '9999px', transition: 'width 0.5s ease-in-out' }}></div>
+          </div>
+          <div className="flex items-center mt-4">
+            <label htmlFor="savingsGoal" className="text-sm font-medium text-text-secondary mr-2">Set Your Goal:</label>
+            <input
+              id="savingsGoal"
+              type="text"
+              placeholder="0"
+              defaultValue={savingsGoal > 0 ? savingsGoal.toLocaleString('en-US') : ''}
+              onBlur={(e) => handleSetSavingsGoal(parseFormattedNumber(e.target.value))}
+              className="w-40 border border-gray-300 rounded-md py-1 px-2 text-sm focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
+            />
+          </div>
+        </Card>
+
+        <Card>
+          <h3 className="text-lg font-semibold text-text-primary mb-4">Add to Savings</h3>
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-grow">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">{CURRENCY_SYMBOL}</span>
+              <input
+                type="text"
+                value={amountToAdd > 0 ? amountToAdd.toLocaleString('en-US') : ''}
+                onChange={(e) => setAmountToAdd(parseFormattedNumber(e.target.value))}
+                placeholder="Enter amount"
+                className="w-full border border-gray-300 rounded-md shadow-sm py-2 pl-7 pr-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
+              />
+            </div>
+            <Button onClick={addFunds}>Add Funds</Button>
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            <button onClick={() => quickAddToSavings(100)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}100</button>
+            <button onClick={() => quickAddToSavings(500)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}500</button>
+            <button onClick={() => quickAddToSavings(1000)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}1,000</button>
+            <button onClick={() => quickAddToSavings(5000)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}5,000</button>
+          </div>
+        </Card>
+
+        <Card>
+          <h3 className="text-lg font-semibold text-text-primary mb-4">Savings History</h3>
+          <div className="space-y-3 max-h-60 overflow-y-auto">
+            {savingsTransactions.map(trans => (
+              <div key={trans.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-semibold text-text-primary">Deposit</p>
+                  <p className="text-sm text-text-secondary">{new Date(trans.date).toLocaleDateString()}</p>
+                </div>
                 <div className="flex items-center space-x-4">
-                    <div className="relative flex-grow">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary">{CURRENCY_SYMBOL}</span>
-                        <input 
-                            type="text"
-                            value={amountToAdd > 0 ? amountToAdd.toLocaleString('en-US') : ''}
-                            onChange={(e) => setAmountToAdd(parseFormattedNumber(e.target.value))}
-                            placeholder="Enter amount"
-                            className="w-full border border-gray-300 rounded-md shadow-sm py-2 pl-7 pr-3 focus:outline-none focus:ring-primary focus:border-primary bg-transparent"
-                        />
-                    </div>
-                    <Button onClick={addFunds}>Add Funds</Button>
+                  <p className="font-semibold text-lg text-secondary">+{CURRENCY_SYMBOL}{trans.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                  <button onClick={() => handleDeleteSavingsTransaction(trans.id)} className="text-gray-400 hover:text-red-500"><Icons.Trash /></button>
                 </div>
-                 <div className="flex flex-wrap gap-2 mt-3">
-                    <button onClick={() => quickAddToSavings(100)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}100</button>
-                    <button onClick={() => quickAddToSavings(500)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}500</button>
-                    <button onClick={() => quickAddToSavings(1000)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}1,000</button>
-                    <button onClick={() => quickAddToSavings(5000)} className="px-3 py-1 text-sm font-semibold bg-gray-200 hover:bg-gray-300 rounded-lg text-text-secondary transition-colors">+ {CURRENCY_SYMBOL}5,000</button>
-                </div>
-            </Card>
-
-            <Card>
-                <h3 className="text-lg font-semibold text-text-primary mb-4">Savings History</h3>
-                <div className="space-y-3 max-h-60 overflow-y-auto">
-                    {savingsTransactions.map(trans => (
-                        <div key={trans.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <div>
-                                <p className="font-semibold text-text-primary">Deposit</p>
-                                <p className="text-sm text-text-secondary">{new Date(trans.date).toLocaleDateString()}</p>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                              <p className="font-semibold text-lg text-secondary">+{CURRENCY_SYMBOL}{trans.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
-                              <button onClick={() => handleDeleteSavingsTransaction(trans.id)} className="text-gray-400 hover:text-red-500"><Icons.Trash /></button>
-                            </div>
-                        </div>
-                    ))}
-                    {savingsTransactions.length === 0 && <p className="text-center text-text-secondary py-4">No savings deposits yet.</p>}
-                </div>
-            </Card>
-        </div>
+              </div>
+            ))}
+            {savingsTransactions.length === 0 && <p className="text-center text-text-secondary py-4">No savings deposits yet.</p>}
+          </div>
+        </Card>
+      </div>
     );
   };
-  
-    const AIAdvisorView = () => (
+
+  const AIAdvisorView = () => (
     <Card>
       <h2 className="text-2xl font-bold text-text-primary mb-4">Personal AI Financial Advisor</h2>
       <p className="text-text-secondary mb-6">Get personalized insights and advice on your spending habits from our AI-powered advisor.</p>
-      
+
       <div className="flex flex-wrap gap-4 mb-6">
         <Button onClick={() => handleGetAIAdvice('analysis')} variant="secondary">Analyze My Spending</Button>
         <Button onClick={() => handleGetAIAdvice('summary')} variant="secondary">Get Monthly Summary</Button>
         <Button onClick={() => handleGetAIAdvice('prediction')} variant="secondary">Predict Future Expenses</Button>
       </div>
-      
+
       <div className="bg-gray-50 p-4 rounded-lg min-h-[300px]">
         {isAiLoading ? (
-            <div className="flex justify-center items-center h-full">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <p className="ml-4 text-text-secondary">Your advisor is thinking...</p>
-            </div>
+          <div className="flex justify-center items-center h-full">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p className="ml-4 text-text-secondary">Your advisor is thinking...</p>
+          </div>
         ) : (
-            <div className="prose max-w-none text-text-primary" dangerouslySetInnerHTML={{ __html: aiResponse.replace(/\n/g, '<br />') || "Your AI-generated advice will appear here. Select an option above to get started." }}></div>
+          <div className="prose max-w-none text-text-primary" dangerouslySetInnerHTML={{ __html: aiResponse.replace(/\n/g, '<br />') || "Your AI-generated advice will appear here. Select an option above to get started." }}></div>
         )}
       </div>
     </Card>
@@ -612,18 +613,17 @@ export default function App() {
         {/* Sidebar Navigation */}
         <nav className="w-64 bg-card shadow-md h-screen sticky top-0 p-4 flex flex-col">
           <div className="text-primary text-2xl font-bold mb-10 text-center py-4">
-            FinAI
+            Chanexhll
           </div>
           <ul className="space-y-2">
             {[AppView.Dashboard, AppView.Budgets, AppView.Savings, AppView.AIAdvisor].map(view => (
               <li key={view}>
                 <button
                   onClick={() => setActiveView(view)}
-                  className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left font-semibold transition-colors ${
-                    activeView === view
-                      ? 'bg-primary text-white shadow-lg'
-                      : 'text-text-secondary hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left font-semibold transition-colors ${activeView === view
+                    ? 'bg-primary text-white shadow-lg'
+                    : 'text-text-secondary hover:bg-gray-100'
+                    }`}
                 >
                   {view === AppView.Dashboard && <Icons.Dashboard />}
                   {view === AppView.Budgets && <Icons.Budget />}
@@ -637,18 +637,18 @@ export default function App() {
           </ul>
           <div className="mt-auto">
             <Button onClick={() => openModal()} className="w-full">
-                <Icons.Plus/> Add Expense
+              <Icons.Plus /> Add Expense
             </Button>
           </div>
         </nav>
 
         {/* Main Content */}
         <main className="flex-1 p-8">
-            <header className="mb-8">
-                <h1 className="text-4xl font-bold text-text-primary">Welcome Back!</h1>
-                <p className="text-text-secondary mt-1">Here's your financial overview.</p>
-            </header>
-            {renderView()}
+          <header className="mb-8">
+            <h1 className="text-4xl font-bold text-text-primary"> Hello, Chanexhll</h1>
+            <p className="text-text-secondary mt-1">Here's your financial overview.</p>
+          </header>
+          {renderView()}
         </main>
       </div>
 
